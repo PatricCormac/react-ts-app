@@ -3,31 +3,37 @@ import { Route, Switch } from 'react-router-dom';
 import TodoList from './pages/TodoList';
 import TodoForm from './pages/TodoForm';
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      newTask: {
+        title: '',
+        descr: '',
+        complete: false,
+        priority: 'success',
+      },
       tasks: [
         {
           id: 0,
           title: 'First task',
           descr: 'Description First task',
           complete: false,
-          color: 'danger',
+          priority: 'danger',
         },
         {
           id: 1,
           title: 'Second task',
           descr: 'Description Second task',
           complete: false,
-          color: 'success',
+          priority: 'success',
         },
         {
           id: 2,
           title: 'Third task',
           descr: 'Description Third task',
           complete: false,
-          color: 'warning',
+          priority: 'warning',
         },
       ],
     };
@@ -48,6 +54,37 @@ class App extends Component {
     });
   };
 
+  addHandler = () => {
+    console.log('Update');
+  };
+
+  changeTitleHandler = (value) => {
+    this.setState({
+      newTask: {
+        ...this.state.newTask,
+        title: value,
+      },
+    });
+  };
+
+  changeDescrHandler = (value) => {
+    this.setState({
+      newTask: {
+        ...this.state.newTask,
+        descr: value,
+      },
+    });
+  };
+
+  changePriorityHandler = (value) => {
+    this.setState({
+      newTask: {
+        ...this.state.newTask,
+        priority: value,
+      },
+    });
+  };
+
   render() {
     return (
       <div className="container">
@@ -55,7 +92,7 @@ class App extends Component {
           <h5 className="display-4 col-12 text-center">Todo List</h5>
           <Switch>
             <Route
-              path="/todo-react"
+              path="/react-ts-app"
               render={() => (
                 <TodoList
                   toggleCheckTask={this.toggleHandler}
@@ -65,12 +102,22 @@ class App extends Component {
               )}
               exact
             />
-            <Route path="/todo-form" component={TodoForm} exact />
+            <Route
+              path="/todo-form"
+              render={() => (
+                <TodoForm
+                  task={this.state.newTask}
+                  changeTitle={this.changeTitleHandler}
+                  changeDescr={this.changeDescrHandler}
+                  changePriority={this.changePriorityHandler}
+                  addTask={this.addHandler}
+                />
+              )}
+              exact
+            />
           </Switch>
         </div>
       </div>
     );
   }
 }
-
-export default App;
